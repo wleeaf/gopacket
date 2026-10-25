@@ -604,9 +604,8 @@ func decodeIPv6Routing(data []byte, p gopacket.PacketBuilder) error {
 		for d := i.Contents[8:]; len(d) >= 16; d = d[16:] {
 			i.SourceRoutingIPs = append(i.SourceRoutingIPs, net.IP(d[:16]))
 		}
-	default:
-		return fmt.Errorf("Unknown IPv6 routing header type %d", i.RoutingType)
 	}
+	// Other routing types, such as a Segment Routing Header (type 4), keep their data in Contents.
 	p.AddLayer(i)
 	return p.NextDecoder(i.NextHeader)
 }
